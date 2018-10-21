@@ -1,0 +1,48 @@
+.detail{
+    text-align: left;
+    /*margin:20px;*/
+}
+
+.detail .summary{
+    text-align: center;
+    margin-top:30px;
+    margin-bottom: 30px;
+}
+
+.detail .feature{
+    margin:20px;
+}
+
+.main{
+    position:relative;
+}
+
+.main img{
+   margin-left:auto;
+    margin-right:auto;
+    display:block;
+    animation: Breathe infinite 3s linear;
+
+}
+
+@keyframes Breathe {
+    0% {
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.03)
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+/* Centered text */
+.main .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color:#333;
+    font-size:60px;
+}

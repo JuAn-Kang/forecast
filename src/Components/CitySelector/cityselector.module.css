@@ -1,0 +1,22 @@
+.loc
+{
+    display: block;
+    margin:auto;
+    text-align: center;
+    margin-top:50px;
+    margin-bottom: 50px;
+}
+
+input{
+    border: 0;
+    border-bottom: 1px solid white;
+    width:60%;
+    margin:auto;
+    display: inline-block;
+    height:50px;
+    font-family: inherit;
+    font-size:20px;
+    text-align: center;
+    background: none;
+    color:white;
+}
