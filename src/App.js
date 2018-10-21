@@ -140,8 +140,8 @@ class App extends Component {
         // Check if address is valid
         if (address) {
             // Set State
-            console.log("ADDRESS: ")
-            console.log(address)
+            // console.log("ADDRESS: ")
+            // console.log(address)
             this.setState(
                 {
                     //Return city name
