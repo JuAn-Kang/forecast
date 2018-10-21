@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import DarkSkyApi from 'dark-sky-api'
 import Axios from 'axios'
 
-
+import TempSwitcher from './Components/tempSwitcher/tempSwitcher'
 import CitySelector from './Components/CitySelector/cityselector'
 import Current from './Components/Current/current'
 import CurrentDetails from './Components/Current/currentDetails'
 import DailyList from './Components/Daily/dailyList'
 import HourlyList from './Components/Hourly/hourlyList'
+
 
 
 import Tabs from './Layouts/Tabs/tabs'
@@ -64,8 +65,8 @@ class App extends Component {
         //TODO load DarkSkyApi to get current position, pass in the position codes to get address from Geocoding
         DarkSkyApi.loadPosition()
             .then(pos => {
-                console.log("DARK API getPosition: ")
-                console.log(pos)
+                // console.log("DARK API getPosition: ")
+                // console.log(pos)
                 this.setState({
                     loc: pos
                 })
@@ -74,8 +75,8 @@ class App extends Component {
             .then(res => {
                 //TODO CHECK FOR ANY ERROR CASES, EG: STATE IS !== OK
                 //if(res.data.status === OK), do bottom. else, display error message.
-                console.log("res inside Axios google call: ")
-                console.log(res)
+                // console.log("res inside Axios google call: ")
+                // console.log(res)
                 if(res.data.status === "OK") {
                     this.setState({
                         city: res.data.results[0].address_components.filter((arr) => arr.types.includes("locality") || arr.types.includes("sublocality"))[0].long_name
@@ -91,8 +92,8 @@ class App extends Component {
                 return DarkSkyApi.loadItAll('',this.state.loc)
             })
             .then(res => {
-                console.log("Dark API Weather call")
-                console.log(res)
+                // console.log("Dark API Weather call")
+                // console.log(res)
                 res.hourly.data = res.hourly.data.slice(24)
                 this.setState({
                     tempUnit: res.flags.units === 'us' ? "F" : "C",
@@ -149,24 +150,26 @@ class App extends Component {
                         longitude: addressObject.geometry.location.lng()}
                 }
             );
-            DarkSkyApi.loadItAll('',this.state.loc)
-                .then(res => {
-                    console.log("Dark API Weather call")
-                    console.log(res)
-                    res.hourly.data = res.hourly.data.slice(24)
-                    this.setState({
-                        tempUnit: res.flags.units === 'us' ? "F" : "C",
-                        loc: {latitude: res.latitude,
-                            longitude: res.longitude},
-                        currentWeather: res.currently,
-                        hourlyWeather:res.hourly,
-                        weeklyWeather:res.daily,
-                        timeOfDay: res.currently.time > res.daily.data[0].sunsetTime ? 'night' : 'day'
-                    })
-                })
+            this.updateWeather()
         }
     }
 
+    updateWeather(){
+        DarkSkyApi.loadItAll('',this.state.loc)
+            .then(res => {
+                // console.log("Dark API Weather call")
+                // console.log(res)
+                res.hourly.data = res.hourly.data.slice(24)
+                this.setState({
+                    loc: {latitude: res.latitude,
+                        longitude: res.longitude},
+                    currentWeather: res.currently,
+                    hourlyWeather:res.hourly,
+                    weeklyWeather:res.daily,
+                    timeOfDay: res.currently.time > res.daily.data[0].sunsetTime ? 'night' : 'day'
+                })
+            })
+    }
     cityChangeHandler = (event) => {
       this.setState({
           city: event.target.value
@@ -176,6 +179,17 @@ class App extends Component {
     getLocation = () => {
         this.loadPage()
     }
+
+    toggleUnit = () =>{
+        const unit = (this.state.tempUnit === "C") ? "F" : "C"
+        const unitapi = (this.state.tempUnit === "C") ? "us" : "si"
+        this.setState({
+            tempUnit: unit
+        })
+        DarkSkyApi.setUnits(unitapi)
+        this.updateWeather()
+       //this.forceUpdate()
+    }
   render() {
     //set background
     document.body.style.backgroundColor = bg[this.state.timeOfDay][this.state.currentWeather.icon]
@@ -184,6 +198,10 @@ class App extends Component {
     if(this.state.width < 1024)
         return (
             <div>
+              <TempSwitcher
+                 tempUnit={this.state.tempUnit}
+                 clicked={this.toggleUnit}
+              />
               <CitySelector
                   apikey={this.API_KEYS.google}
                   city={this.state.city}
@@ -217,7 +235,12 @@ class App extends Component {
         )
     else
         return (
+
             <div className={"tablet-container"}>
+                <TempSwitcher
+                    tempUnit={this.state.tempUnit}
+                    clicked={this.toggleUnit}
+                />
                 <div className={"column"}>
                 <CitySelector
                     apikey={this.API_KEYS.google}
@@ -229,11 +252,9 @@ class App extends Component {
                 />
                 <Current
                     data={this.state.currentWeather}
-                    unit={this.state.tempUnit}
                 />
                 <CurrentDetails
                 data={this.state.currentWeather}
-                unit={this.state.tempUnit}
                 />
                 </div>
                 <div className={"column"}>

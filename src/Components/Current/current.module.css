@@ -38,11 +38,11 @@
 }
 /* Centered text */
 .main .centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color:#333;
-    font-size:60px;
-}
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     font-weight: bold;
+     color:#333;
+     font-size:60px;
+ }
