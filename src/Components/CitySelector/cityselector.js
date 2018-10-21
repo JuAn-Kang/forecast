@@ -17,7 +17,7 @@ const CitySelector = (props) => {
                 type="text"
                 value={props.city}
                 onChange={props.changed}/>
-            <img src={locationIcon} height="15px" onClick={props.clicked}/>
+            <img alt="locate" src={locationIcon} height="15px" onClick={props.clicked}/>
         </div>
     )
 }

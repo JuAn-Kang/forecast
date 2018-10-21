@@ -195,13 +195,52 @@ class App extends Component {
     document.body.style.backgroundColor = bg[this.state.timeOfDay][this.state.currentWeather.icon]
 
     //Tabbed Layout for Mobile components
-    if(this.state.width < 1024)
+      if(this.state.width <this.state.height)
+          return (
+              <div>
+                  <TempSwitcher
+                      tempUnit={this.state.tempUnit}
+                      clicked={this.toggleUnit}
+                  />
+                  <CitySelector
+                      apikey={this.API_KEYS.google}
+                      city={this.state.city}
+                      error={this.scriptErrorHandler}
+                      loaded={this.scriptLoadHandler}
+                      changed={this.cityChangeHandler}
+                      clicked={this.getLocation}
+                  />
+                  <Current
+                      data={this.state.currentWeather}
+                      unit={this.state.tempUnit}
+                  />
+                  <Tabs>
+                      <div label="Now">
+                          <CurrentDetails
+                              data={this.state.currentWeather}
+                              unit={this.state.tempUnit}
+                          />
+                      </div>
+                      <div label="Today">
+                          <DailyList
+                              data={this.state.weeklyWeather}
+                          />
+                      </div>
+                      <div label="This Week">
+                          <HourlyList
+                              data={this.state.hourlyWeather}
+                          />                </div>
+                  </Tabs>
+              </div>
+          )
+    else if(this.state.width < 1024)
         return (
-            <div>
+            <div className={"tablet-sm-container"}>
               <TempSwitcher
                  tempUnit={this.state.tempUnit}
                  clicked={this.toggleUnit}
               />
+                <div className={"column"}>
               <CitySelector
                   apikey={this.API_KEYS.google}
                   city={this.state.city}
@@ -214,6 +253,9 @@ class App extends Component {
                   data={this.state.currentWeather}
                   unit={this.state.tempUnit}
                 />
+                </div>
+
+                <div className={"column"}>
                 <Tabs>
                     <div label="Now">
                         <CurrentDetails
@@ -231,6 +273,7 @@ class App extends Component {
                             data={this.state.hourlyWeather}
                         />                </div>
                 </Tabs>
+                </div>
             </div>
         )
     else

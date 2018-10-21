@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #56C1FF;
 }
 
 .pac-container{
@@ -10,10 +11,21 @@
   display:none;
 }
 
+.tablet-sm-container{
+  display:flex;
+  width:100%;
+}
+
+.tablet-sm-container .column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .tablet-container{
   display:flex;
   width:100%;
-
 }
 
 .tablet-container .column {

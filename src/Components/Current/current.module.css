@@ -8,7 +8,12 @@
     margin-top:30px;
     margin-bottom: 30px;
 }
-
+@media only screen and (min-width: 665px) and (max-width: 1024px){
+    .detail .summary{
+        margin-left: 20px;
+        text-align: left;
+    }
+}
 .detail .feature{
     margin:20px;
 }
