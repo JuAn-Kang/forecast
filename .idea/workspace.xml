@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="29a00712-06f5-46cc-b10d-767ace8317ee" name="Default Changelist" comment="Today &lt;-&gt;This Week">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -150,7 +149,7 @@
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="92">
-              <caret line="4" column="43" lean-forward="true" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="43" />
+              <caret line="4" column="51" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -380,7 +379,7 @@
       <updated>1539875197942</updated>
       <workItem from="1539875199203" duration="13454000" />
       <workItem from="1539973090523" duration="63509000" />
-      <workItem from="1540202265471" duration="1140000" />
+      <workItem from="1540202265471" duration="2294000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit to gh">
       <created>1540141973696</created>
@@ -428,7 +427,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78103000" />
+    <option name="totallyTimeSpent" value="79257000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -441,6 +440,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="840" y="23" width="840" height="977" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5412371" visible="true" weight="0.26739928" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -670,7 +670,7 @@
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
-          <caret line="4" column="43" lean-forward="true" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="43" />
+          <caret line="4" column="51" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
         </state>
       </provider>
     </entry>
