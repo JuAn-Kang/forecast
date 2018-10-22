@@ -14,7 +14,10 @@ import HourlyList from './Components/Hourly/hourlyList'
 import Tabs from './Layouts/Tabs/tabs'
 import {bg} from './Components/enums'
 
+
+
 import './App.css'
+import loader from './assets/loader/loader.svg'
 //import Script from "react-load-script";
 
 class App extends Component {
@@ -44,7 +47,8 @@ class App extends Component {
             },
             weeklyWeather:{
             },
-            timeOfDay:'day'
+            timeOfDay:'day',
+            allLoaded: false,
         }
     }
 
@@ -105,6 +109,7 @@ class App extends Component {
                     timeOfDay: ((res.currently.time > res.daily.data[0].sunsetTime) || (res.currently.time < res.daily.data[0].sunriseTime)) ? 'night' : 'day'
                 })
             })
+            .then(() => {this.setState({allLoaded:true})})
     }
   API_KEYS= {
       google: process.env.REACT_APP_GOOGLE_PLACES_API_KEY,
@@ -166,7 +171,8 @@ class App extends Component {
                     currentWeather: res.currently,
                     hourlyWeather:res.hourly,
                     weeklyWeather:res.daily,
-                    timeOfDay: res.currently.time > res.daily.data[0].sunsetTime ? 'night' : 'day'
+                    timeOfDay: res.currently.time > res.daily.data[0].sunsetTime ? 'night' : 'day',
+                    allLoaded:true
                 })
             })
     }
@@ -193,129 +199,149 @@ class App extends Component {
   render() {
     //set background
     document.body.style.backgroundColor = bg[this.state.timeOfDay][this.state.currentWeather.icon]
-
-    //Tabbed Layout for Mobile components
-      if(this.state.width <this.state.height)
-          return (
-              <div>
-                  <TempSwitcher
-                      tempUnit={this.state.tempUnit}
-                      clicked={this.toggleUnit}
-                  />
-                  <CitySelector
-                      apikey={this.API_KEYS.google}
-                      city={this.state.city}
-                      error={this.scriptErrorHandler}
-                      loaded={this.scriptLoadHandler}
-                      changed={this.cityChangeHandler}
-                      clicked={this.getLocation}
-                  />
-                  <Current
-                      data={this.state.currentWeather}
-                      unit={this.state.tempUnit}
-                  />
-                  <Tabs>
-                      <div label="Now">
-                          <CurrentDetails
-                              data={this.state.currentWeather}
-                              unit={this.state.tempUnit}
-                          />
-                      </div>
-                      <div label="Today">
-                          <HourlyList
-                              data={this.state.hourlyWeather}
-                          />
-                      </div>
-                      <div label="This Week">
-                          <DailyList
-                              data={this.state.weeklyWeather}
-                          />
-                      </div>
-                  </Tabs>
-              </div>
-          )
-    else if(this.state.width < 1024)
-        return (
-            <div className={"tablet-sm-container"}>
-              <TempSwitcher
-                 tempUnit={this.state.tempUnit}
-                 clicked={this.toggleUnit}
-              />
-                <div className={"column"}>
-              <CitySelector
-                  apikey={this.API_KEYS.google}
-                  city={this.state.city}
-                  error={this.scriptErrorHandler}
-                  loaded={this.scriptLoadHandler}
-                  changed={this.cityChangeHandler}
-                  clicked={this.getLocation}
-              />
-                <Current
-                  data={this.state.currentWeather}
-                  unit={this.state.tempUnit}
-                />
+    if(!this.state.allLoaded){
+        return(<div>
+            <TempSwitcher
+                tempUnit={this.state.tempUnit}
+                clicked={this.toggleUnit}
+            />
+            <CitySelector
+                apikey={this.API_KEYS.google}
+                city={this.state.city}
+                error={this.scriptErrorHandler}
+                loaded={this.scriptLoadHandler}
+                changed={this.cityChangeHandler}
+                clicked={this.getLocation}
+            />
+            <div className={"loader-container"}>
+                <img src={loader} />
+            </div>
+        </div>)
+    }
+    else {
+        //Tabbed Layout for Mobile components
+        if (this.state.width < this.state.height)
+            return (
+                <div>
+                    {/*<img id="loader"  src={loader} />*/}
+                    <TempSwitcher
+                        tempUnit={this.state.tempUnit}
+                        clicked={this.toggleUnit}
+                    />
+                    <CitySelector
+                        apikey={this.API_KEYS.google}
+                        city={this.state.city}
+                        error={this.scriptErrorHandler}
+                        loaded={this.scriptLoadHandler}
+                        changed={this.cityChangeHandler}
+                        clicked={this.getLocation}
+                    />
+                    <Current
+                        data={this.state.currentWeather}
+                        unit={this.state.tempUnit}
+                    />
+                    <Tabs>
+                        <div label="Now">
+                            <CurrentDetails
+                                data={this.state.currentWeather}
+                                unit={this.state.tempUnit}
+                            />
+                        </div>
+                        <div label="Today">
+                            <HourlyList
+                                data={this.state.hourlyWeather}
+                            />
+                        </div>
+                        <div label="This Week">
+                            <DailyList
+                                data={this.state.weeklyWeather}
+                            />
+                        </div>
+                    </Tabs>
                 </div>
-
-                <div className={"column"}>
-                <Tabs>
-                    <div label="Now">
-                        <CurrentDetails
+            )
+        else if (this.state.width < 1024 && (this.state.width > this.state.height))
+            return (
+                <div className={"tablet-sm-container"}>
+                    <TempSwitcher
+                        tempUnit={this.state.tempUnit}
+                        clicked={this.toggleUnit}
+                    />
+                    <div className={"column"}>
+                        <CitySelector
+                            apikey={this.API_KEYS.google}
+                            city={this.state.city}
+                            error={this.scriptErrorHandler}
+                            loaded={this.scriptLoadHandler}
+                            changed={this.cityChangeHandler}
+                            clicked={this.getLocation}
+                        />
+                        <Current
                             data={this.state.currentWeather}
                             unit={this.state.tempUnit}
                         />
                     </div>
-                    <div label="Today">
+
+                    <div className={"column"}>
+                        <Tabs>
+                            <div label="Now">
+                                <CurrentDetails
+                                    data={this.state.currentWeather}
+                                    unit={this.state.tempUnit}
+                                />
+                            </div>
+                            <div label="Today">
+                                <HourlyList
+                                    data={this.state.hourlyWeather}
+                                />
+                            </div>
+                            <div label="This Week">
+
+                                <DailyList
+                                    data={this.state.weeklyWeather}
+                                />
+                            </div>
+                        </Tabs>
+                    </div>
+                </div>
+            )
+        else
+            return (
+
+                <div className={"tablet-container"}>
+                    <TempSwitcher
+                        tempUnit={this.state.tempUnit}
+                        clicked={this.toggleUnit}
+                    />
+                    <div className={"column"}>
+                        <CitySelector
+                            apikey={this.API_KEYS.google}
+                            city={this.state.city}
+                            error={this.scriptErrorHandler}
+                            loaded={this.scriptLoadHandler}
+                            changed={this.cityChangeHandler}
+                            clicked={this.getLocation}
+                        />
+                        <Current
+                            data={this.state.currentWeather}
+                        />
+                        <CurrentDetails
+                            data={this.state.currentWeather}
+                        />
+                    </div>
+                    <div className={"column"}>
+                        <h1>Today</h1>
                         <HourlyList
                             data={this.state.hourlyWeather}
                         />
-                    </div>
-                    <div label="This Week">
-
+                        <h1>This Week</h1>
                         <DailyList
                             data={this.state.weeklyWeather}
                         />
                     </div>
-                </Tabs>
                 </div>
-            </div>
-        )
-    else
-        return (
-
-            <div className={"tablet-container"}>
-                <TempSwitcher
-                    tempUnit={this.state.tempUnit}
-                    clicked={this.toggleUnit}
-                />
-                <div className={"column"}>
-                <CitySelector
-                    apikey={this.API_KEYS.google}
-                    city={this.state.city}
-                    error={this.scriptErrorHandler}
-                    loaded={this.scriptLoadHandler}
-                    changed={this.cityChangeHandler}
-                    clicked={this.getLocation}
-                />
-                <Current
-                    data={this.state.currentWeather}
-                />
-                <CurrentDetails
-                data={this.state.currentWeather}
-                />
-                </div>
-                <div className={"column"}>
-                    <h1>Today</h1>
-                <HourlyList
-                    data={this.state.hourlyWeather}
-                />
-                    <h1>This Week</h1>
-                <DailyList
-                data={this.state.weeklyWeather}
-                />
-                </div>
-            </div>
-        )
-
+            )
+    }
   }
 }
 
