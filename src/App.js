@@ -222,14 +222,15 @@ class App extends Component {
                           />
                       </div>
                       <div label="Today">
+                          <HourlyList
+                              data={this.state.hourlyWeather}
+                          />
+                      </div>
+                      <div label="This Week">
                           <DailyList
                               data={this.state.weeklyWeather}
                           />
                       </div>
-                      <div label="This Week">
-                          <HourlyList
-                              data={this.state.hourlyWeather}
-                          />                </div>
                   </Tabs>
               </div>
           )
@@ -264,14 +265,16 @@ class App extends Component {
                         />
                     </div>
                     <div label="Today">
+                        <HourlyList
+                            data={this.state.hourlyWeather}
+                        />
+                    </div>
+                    <div label="This Week">
+
                         <DailyList
                             data={this.state.weeklyWeather}
                         />
                     </div>
-                    <div label="This Week">
-                        <HourlyList
-                            data={this.state.hourlyWeather}
-                        />                </div>
                 </Tabs>
                 </div>
             </div>
