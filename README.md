@@ -1,3 +1,11 @@
+##Future Plans
+- Paginated list of locations & weathers
+- Loading screen to display while fetching data
+- More immediate, perceptive UI 
+
+##Todo
+- Default screen for users w/o geolocation
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
