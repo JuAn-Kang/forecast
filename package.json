@@ -2,7 +2,7 @@
   "name": "forecast",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://JuAn-Kang.github.io/forecast",
+  "homepage": "https://JuAn-Kang.github.io/forecast-new",
   "dependencies": {
     "axios": "^0.18.0",
     "dark-sky-api": "^0.6.31",
