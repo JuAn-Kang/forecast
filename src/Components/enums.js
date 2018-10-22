@@ -30,8 +30,7 @@ export const bg = {
 
 function importAll(r) {
     let images = {}
-    //r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
-    r.keys().map((item) =>  images[item.replace('./', '')] = r(item) );
+    r.keys().map((item) =>  images[item.replace('./', '')] = r(item));
     return images
 }
 

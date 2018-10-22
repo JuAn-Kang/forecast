@@ -9,16 +9,11 @@ import CurrentDetails from './Components/Current/currentDetails'
 import DailyList from './Components/Daily/dailyList'
 import HourlyList from './Components/Hourly/hourlyList'
 
-
-
 import Tabs from './Layouts/Tabs/tabs'
 import {bg} from './Components/enums'
 
-
-
 import './App.css'
 import loader from './assets/loader/loader.svg'
-//import Script from "react-load-script";
 
 class App extends Component {
 
@@ -27,14 +22,13 @@ class App extends Component {
 
         DarkSkyApi.apiKey = this.API_KEYS.darkSky
         DarkSkyApi.setUnits('si')
-        DarkSkyApi.postProcessor = (item) => { // must accept weather data item param
-
+        DarkSkyApi.postProcessor = (item) => {
             // add units object onto item
-            item.units = DarkSkyApi.getResponseUnits(); // this would be outdated if you changed api units later
-
-            return item; // must return weather data item
+            item.units = DarkSkyApi.getResponseUnits();
+            return item;
         };
 
+        //Tentative: initialize State
         this.state = {
             width: window.innerWidth,
             height: window.innerHeight,
@@ -49,78 +43,56 @@ class App extends Component {
             },
             timeOfDay:'day',
             allLoaded: false,
+            geo:false
         }
     }
 
-    getWindowSize = () =>{
-        this.setState({
-            width: window.innerWidth,
-            height: window.innerHeight
-        })
+    //Temp
+    API_KEYS= {
+        google: process.env.REACT_APP_GOOGLE_PLACES_API_KEY,
+        darkSky: process.env.REACT_APP_DARK_SKY_API_KEY
     }
 
+    //load page, listen to window resize, check if user allowed geolocation
     componentDidMount(){
         this.loadPage()
         window.addEventListener("resize", this.getWindowSize);
+        //Check if user enabled Geolocation, save it onto state
+        navigator.geolocation.getCurrentPosition(
+            () => {this.setState({geo:true})},
+            () => {this.setState({geo:false})}
+        )
     }
 
-
+    //get Position, reverse Geolocate, and fetch local weather data
     loadPage(){
-        //TODO load DarkSkyApi to get current position, pass in the position codes to get address from Geocoding
         DarkSkyApi.loadPosition()
             .then(pos => {
-                // console.log("DARK API getPosition: ")
-                // console.log(pos)
                 this.setState({
                     loc: pos
                 })
                 return Axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.latitude},${pos.longitude}&key=${this.API_KEYS.google}`)
             })
             .then(res => {
-                //TODO CHECK FOR ANY ERROR CASES, EG: STATE IS !== OK
-                //if(res.data.status === OK), do bottom. else, display error message.
-                // console.log("res inside Axios google call: ")
-                // console.log(res)
                 if(res.data.status === "OK") {
                     this.setState({
                         city: res.data.results[0].address_components.filter((arr) => arr.types.includes("locality") || arr.types.includes("sublocality"))[0].long_name
-                    })
-                }
-                else{ //if status of Google API !== OK
-                    this.setState({
-                        city: "Error fetching data"
-                    })
+                    })}
+                else{ //Error case on API (Query Limit, Failure, etc)
+                    this.setState({city: "Error fetching data. Please try again later."})
                 }
 
-                //Dark Sky: Fetch data
-                return DarkSkyApi.loadItAll('',this.state.loc)
             })
-            .then(res => {
-                // console.log("Dark API Weather call")
-                // console.log(res)
-                res.hourly.data = res.hourly.data.slice(24)
-                this.setState({
-                    tempUnit: res.flags.units === 'us' ? "F" : "C",
-                    loc: {latitude: res.latitude,
-                        longitude: res.longitude},
-                    currentWeather: res.currently,
-                    hourlyWeather:res.hourly,
-                    weeklyWeather:res.daily,
-                    timeOfDay: ((res.currently.time > res.daily.data[0].sunsetTime) || (res.currently.time < res.daily.data[0].sunriseTime)) ? 'night' : 'day'
-                })
-            })
-            .then(() => {this.setState({allLoaded:true})})
+            .then(()=>{this.updateWeather()})
+
     }
-  API_KEYS= {
-      google: process.env.REACT_APP_GOOGLE_PLACES_API_KEY,
-      darkSky: process.env.REACT_APP_DARK_SKY_API_KEY
-  }
 
-
+    //Error Handling
     scriptErrorHandler = () =>{
         this.setState({ scriptError: true })
     }
 
+    //Update autocomplete
     scriptLoadHandler = () =>{
         // Declare Options For Autocomplete
 
@@ -136,8 +108,29 @@ class App extends Component {
             this.handlePlaceSelect);
     }
 
-    handlePlaceSelect = () => {
+    //Update weather when user updates location
+    updateWeather(){
+        DarkSkyApi.loadItAll('',this.state.loc)
+            .then(res => {
+                // console.log("Dark API Weather call")
+                // console.log(res)
+                res.hourly.data = res.hourly.data.slice(24)
+                this.setState({
+                    tempUnit: res.flags.units === 'us' ? "F" : "C",
+                    loc: {latitude: res.latitude,
+                        longitude: res.longitude},
+                    currentWeather: res.currently,
+                    hourlyWeather:res.hourly,
+                    weeklyWeather:res.daily,
+                    timeOfDay: ((res.currently.time > res.daily.data[0].sunsetTime) || (res.currently.time < res.daily.data[0].sunriseTime)) ? 'night' : 'day',
+                    allLoaded:true
+                })
+            })
+    }
 
+    handlePlaceSelect = () => {
+        //set back to true after load
+        this.setState({allLoaded:false})
         // Address -> City, latlng
         let addressObject = this.autocomplete.getPlace();
         let address = addressObject.address_components;
@@ -159,23 +152,6 @@ class App extends Component {
         }
     }
 
-    updateWeather(){
-        DarkSkyApi.loadItAll('',this.state.loc)
-            .then(res => {
-                // console.log("Dark API Weather call")
-                // console.log(res)
-                res.hourly.data = res.hourly.data.slice(24)
-                this.setState({
-                    loc: {latitude: res.latitude,
-                        longitude: res.longitude},
-                    currentWeather: res.currently,
-                    hourlyWeather:res.hourly,
-                    weeklyWeather:res.daily,
-                    timeOfDay: res.currently.time > res.daily.data[0].sunsetTime ? 'night' : 'day',
-                    allLoaded:true
-                })
-            })
-    }
     cityChangeHandler = (event) => {
       this.setState({
           city: event.target.value
@@ -186,6 +162,15 @@ class App extends Component {
         this.loadPage()
     }
 
+    //Listen to window size change for layout
+    getWindowSize = () =>{
+        this.setState({
+            width: window.innerWidth,
+            height: window.innerHeight
+        })
+    }
+
+    //Toggle between C and F
     toggleUnit = () =>{
         const unit = (this.state.tempUnit === "C") ? "F" : "C"
         const unitapi = (this.state.tempUnit === "C") ? "us" : "si"
@@ -194,12 +179,19 @@ class App extends Component {
         })
         DarkSkyApi.setUnits(unitapi)
         this.updateWeather()
-       //this.forceUpdate()
     }
   render() {
+
     //set background
     document.body.style.backgroundColor = bg[this.state.timeOfDay][this.state.currentWeather.icon]
-    if(!this.state.allLoaded){
+
+    //Encourage geolocation if not enabled
+    const loadermsg = (!this.state.geo && !this.state.loc) ?
+      (<div className={"loadermsg"}>Enter a location above, or enable location access for local weather data.</div>) :
+          (<div className={"loadermsg"}>Loading...</div>)
+
+      //When data is still loading
+      if(!this.state.allLoaded){
         return(<div>
             <TempSwitcher
                 tempUnit={this.state.tempUnit}
@@ -216,8 +208,10 @@ class App extends Component {
             <div className={"loader-container"}>
                 <img src={loader} />
             </div>
+            {loadermsg}
         </div>)
     }
+    //If all data is ready
     else {
         //Tabbed Layout for Mobile components
         if (this.state.width < this.state.height)
@@ -307,7 +301,6 @@ class App extends Component {
             )
         else
             return (
-
                 <div className={"tablet-container"}>
                     <TempSwitcher
                         tempUnit={this.state.tempUnit}

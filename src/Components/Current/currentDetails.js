@@ -7,7 +7,6 @@ const CurrentDetails = (props) => {
     return (
         <div className={Styles.detail}>
             <div className={Styles.summary}>{props.data.summary}.</div>
-            <div className={Styles.feature}>{props.data.day}</div>
             <div className={Styles.feature}>
                 Chance of rain: {props.data.precipProbability * 100}%
             </div>

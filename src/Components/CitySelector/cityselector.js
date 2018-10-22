@@ -4,6 +4,7 @@ import Script from 'react-load-script'
 import Styles from './cityselector.module.css'
 
 import locationIcon from '../../assets/misc/location.png'
+
 const CitySelector = (props) => {
     return(
         <div className={Styles.loc}>
