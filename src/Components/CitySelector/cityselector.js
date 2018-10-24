@@ -1,5 +1,6 @@
 import React from 'react'
 import Script from 'react-load-script'
+import PropTypes from 'prop-types'
 
 import Styles from './cityselector.module.css'
 
@@ -22,4 +23,14 @@ const CitySelector = (props) => {
         </div>
     )
 }
+
+CitySelector.propTypes = {
+    apikey:PropTypes.string,
+    error:PropTypes.func,
+    loaded:PropTypes.func,
+    city:PropTypes.string,
+    changed:PropTypes.func,
+    clicked:PropTypes.func
+}
+
 export default CitySelector
