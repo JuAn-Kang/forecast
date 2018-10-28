@@ -11,6 +11,7 @@ import HourlyList from './Components/Hourly/hourlyList'
 
 import Tabs from './Layouts/Tabs/tabs'
 import {bg} from './Components/enums'
+import {cityTypes} from "./Components/enums";
 
 import './App.css'
 import loader from './assets/loader/loader.svg'
@@ -76,7 +77,10 @@ class App extends Component {
             .then(res => {
                 if(res.data.status === "OK") {
                     this.setState({
-                        city: res.data.results[0].address_components.filter((arr) => arr.types.includes("locality") || arr.types.includes("sublocality"))[0].long_name
+                        city: res.data.results[0].address_components.filter((arr) => arr.types.includes("locality")
+                            || arr.types.includes("sublocality")
+                            || arr.types.includes("political")
+                        )[0].long_name
                     })}
                 else{ //Error case on API (Query Limit, Failure, etc)
                     this.setState({city: "Error fetching data. Please try again later."})

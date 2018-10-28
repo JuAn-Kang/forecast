@@ -34,5 +34,7 @@ function importAll(r) {
     return images
 }
 
+export const cityTypes = ["administrative_area_level_1","administrative_area_level_2","sublocality","locality","political"]
+
 export const mainImages = importAll(require.context('../assets/weather-lg', false, /\.(png|jpe?g|svg)$/));
 export const smallImages = importAll(require.context('../assets/weather-sm', false, /\.(png|jpe?g|svg)$/));
