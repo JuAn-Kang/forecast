@@ -16,7 +16,7 @@ const Daily = (props) => {
                 sameElse: 'ddd, Do'
             })}</div>
             <div  className={Styles.cell}>
-                <img src={images[`${props.data.icon}.png`]} alt={props.data.icon}/>
+                <img src={images[`${props.data.icon}.svg`]} alt={props.data.icon}/>
             </div>
             <div className={Styles.cell}><b>{Math.round(props.data.temperatureHigh)}º</b>/{Math.round(props.data.temperatureLow)}º</div>
         </div>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="183px" viewBox="0 0 200 183" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 7 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Sky-Color" transform="translate(-298.000000, -3457.000000)">
+            <g id="Group-7-Copy" transform="translate(298.000000, 3457.000000)">
+                <path d="M130,136.983901 L130,137 L48,137 L48,136.960731 C21.3129253,135.910915 0,113.944408 0,87 C0,59.3857625 22.3857625,37 50,37 C56.6808473,37 63.0556589,38.3102943 68.8814697,40.6879178 C79.5448544,16.7153301 103.57039,0 131.5,0 C169.331505,0 200,30.6684946 200,68.5 C200,106.331505 169.331505,137 131.5,137 C130.998724,137 130.498706,136.994616 130,136.983901 Z" id="Combined-Shape-Copy-3" fill="#888888"></path>
+                <g id="Group-6" transform="translate(70.000000, 65.000000)" fill="#F9BB00">
+                    <polygon id="Triangle" transform="translate(44.000000, 82.000000) scale(-1, 1) translate(-44.000000, -82.000000) " points="67 118 21 46 60.1734192 46"></polygon>
+                    <polygon id="Rectangle" points="22.8881194 0 56 -1.94515139e-15 37.5995914 46 37.5995914 68 0 68"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

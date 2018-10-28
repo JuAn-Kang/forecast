@@ -8,7 +8,7 @@ const Hourly = (props) => {
         <div className={Styles.hourly}>
             <div className={Styles.cell}>{Moment.unix(props.data.time).format('HH:MM a')}</div>
             <div className={Styles.cell}>
-                <img src={images[`${props.data.icon}.png`]} alt={props.data.icon}/>
+                <img src={images[`${props.data.icon}.svg`]} alt={props.data.icon}/>
             </div>
             <div className={Styles.cell}><b>{Math.round(props.data.temperature)}º</b></div>
         </div>
