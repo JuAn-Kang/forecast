@@ -126,7 +126,7 @@ class App extends Component {
                     currentWeather: res.currently,
                     hourlyWeather:res.hourly,
                     weeklyWeather:res.daily,
-                    timeOfDay: ((res.currently.time > res.daily.data[0].sunsetTime) || (res.currently.time < res.daily.data[0].sunriseTime)) ? 'night' : 'day',
+                    timeOfDay: ((res.currently.time> res.daily.data[0].sunsetTime) || (res.currently.time < res.daily.data[0].sunriseTime)) ? 'night' : 'day',
                     allLoaded:true
                 })
             })
